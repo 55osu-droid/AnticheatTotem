@@ -1,0 +1,29 @@
+name: Build AntiCheatTotem
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le projet
+        uses: actions/checkout@v4
+
+      - name: Installer Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Compiler avec Maven
+        run: mvn clean package
+
+      - name: Mettre le JAR à disposition
+        uses: actions/upload-artifact@v4
+        with:
+          name: AntiCheatTotem-JAR
+          path: target/*.jar
