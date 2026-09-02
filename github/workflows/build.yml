@@ -9,22 +9,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Télécharger le projet
         uses: actions/checkout@v4
 
-      - name: Set up Java 17
+      - name: Installer Java 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: maven
-          cache-dependency-path: AntiCheatTotem/pom.xml
 
-      - name: Build with Maven
-        run: mvn -f AntiCheatTotem/pom.xml clean package
+      - name: Extraire le projet
+        run: unzip -o "AntiCheatTotem (1).zip" -d project
 
-      - name: Upload JAR
+      - name: Compiler avec Maven
+        run: |
+          POM=$(find project -name pom.xml -print -quit)
+          echo "POM trouvé : $POM"
+          mvn -f "$POM" clean package
+
+      - name: Récupérer le JAR
         uses: actions/upload-artifact@v4
         with:
           name: AntiCheatTotem-JAR
-          path: AntiCheatTotem/target/*.jar
+          path: project/**/target/*.jar
