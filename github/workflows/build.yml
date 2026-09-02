@@ -18,12 +18,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+          cache-dependency-path: AntiCheatTotem/pom.xml
 
       - name: Build with Maven
-        run: mvn clean package
+        run: mvn -f AntiCheatTotem/pom.xml clean package
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
           name: AntiCheatTotem-JAR
-          path: target/*.jar
+          path: AntiCheatTotem/target/*.jar
